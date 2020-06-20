@@ -21,11 +21,8 @@ public class MyPanel extends JPanel implements WindowListener {
     private int check = 0;
     private boolean flag = true;
 
-    public boolean isEmpty(String name) {
-        if (name.isEmpty()) {
-            return false;
-        }
-        return true;
+    private boolean isEmpty(String name) {
+        return !name.isEmpty();
     }
 
     public void paint(Graphics graphics) {
@@ -117,216 +114,213 @@ public class MyPanel extends JPanel implements WindowListener {
         textField1.setEditable(false);
         textField2.setEditable(false);
         textField3.setEditable(false);
-        ActionListener actionListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ArrayList<String> array = new ArrayList<>();
-                for (int i = 0; i <model.getRowCount() ; i++) {
-                    array.add((String) model.getValueAt(i, 0));
+        ActionListener actionListener = e -> {
+            ArrayList<String> array = new ArrayList<>();
+            for (int i = 0; i <model.getRowCount() ; i++) {
+                array.add((String) model.getValueAt(i, 0));
+            }
+            String id = "";
+            String name = "";
+            if (e.getSource() == b4) {//nut addNew
+                textField.setEditable(true);
+                textField1.setEditable(true);
+                textField2.setEditable(true);
+                textField3.setEditable(true);
+                textField.requestFocus();
+            }
+            if (e.getSource() == b1) {//nut Save
+                try {
+                    id = textField.getText();
+                    if (isEmpty(id)) {
+                        isOK = true;
+                    } else {
+                        int zero = 0;
+                        int average = 10 / zero;
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "StudentID không được bỏ trống!");
+                    isOK = false;
                 }
-                String id = "";
-                String name = "";
-                if (e.getSource() == b4) {//nut addNew
-                    textField.setEditable(true);
-                    textField1.setEditable(true);
-                    textField2.setEditable(true);
-                    textField3.setEditable(true);
-                    textField.requestFocus();
-                }
-                if (e.getSource() == b1) {//nut Save
+
+                if (isOK == true) {
                     try {
-                        id = textField.getText();
-                        if (isEmpty(id)) {
-                            isOK = true;
-                        } else {
+                        for (int i = 0; i <model.getRowCount() ; i++) {
+                            if(id.equals(array.get(i))){
+                                isOK =false;
+                                break;
+                            }
+                        }
+                        if(isOK == true){
+
+                        }else {
                             int zero = 0;
                             int average = 10 / zero;
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "StudentID không được bỏ trống!");
+                        JOptionPane.showMessageDialog(null, "StudentID không được Trùng !");
                         isOK = false;
                     }
+                }
 
-                    if (isOK == true) {
+                if (isOK == true) {
                         try {
-                            for (int i = 0; i <model.getRowCount() ; i++) {
-                                if(id.equals(array.get(i))){
-                                    isOK =false;
-                                    break;
-                                }
-                            }
-                            if(isOK == true){
-
-                            }else {
+                            name = textField1.getText();
+                            if (isEmpty(name)) {
+                                isOK = true;
+                            } else {
                                 int zero = 0;
                                 int average = 10 / zero;
                             }
                         } catch (Exception ex) {
-                            JOptionPane.showMessageDialog(null, "StudentID không được Trùng !");
+                            JOptionPane.showMessageDialog(null, "StudentName không được bỏ trống!");
                             isOK = false;
                         }
                     }
-
                     if (isOK == true) {
-                            try {
-                                name = textField1.getText();
-                                if (isEmpty(name)) {
-                                    isOK = true;
-                                } else {
-                                    int zero = 0;
-                                    int average = 10 / zero;
-                                }
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null, "StudentName không được bỏ trống!");
-                                isOK = false;
-                            }
+                        try {
+                            Long.parseLong(textField3.getText());
+                            isOK = true;
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    "ContactInfo phải là số và ko chứa kí tự khác!");
+                            isOK = false;
                         }
-                        if (isOK == true) {
-                            try {
-                                Long.parseLong(textField3.getText());
+                    }
+                    if (isOK == true) {
+                        try {
+                            normalTf.setText((String) textField2.getValue());
+                            if (normalTf.getText().isEmpty()) {
+                                int zero = 0;
+                                int average = 10 / zero;
+                            } else {
                                 isOK = true;
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null,
-                                        "ContactInfo phải là số và ko chứa kí tự khác!");
-                                isOK = false;
                             }
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null,
+                                    " Date Of Birth không được bỏ trống!");
+                            isOK = false;
                         }
-                        if (isOK == true) {
-                            try {
-                                normalTf.setText((String) textField2.getValue());
-                                if (normalTf.getText().isEmpty()) {
-                                    int zero = 0;
-                                    int average = 10 / zero;
-                                } else {
-                                    isOK = true;
-                                }
-                            } catch (Exception ex) {
-                                JOptionPane.showMessageDialog(null,
-                                        " Date Of Birth không được bỏ trống!");
-                                isOK = false;
-                            }
 
 
-                        }
-                        if (editIndex >= 0 && isOK == true && check == 1) {
-                            model.setValueAt(textField.getText(), editIndex, 1);
-                            model.setValueAt(textField1.getText(), editIndex, 1);
-                            model.setValueAt(textField2.getText(), editIndex, 2);
-                            model.setValueAt(textField3.getText(), editIndex, 3);
-                            textField.setText("");
-                            textField1.setText("");
-                            textField2.setText("");
-                            textField3.setText("");
-                            editIndex = -1;
-                        } else if (isOK == true) {
-                            model.addRow(new Object[]{textField.getText(),
-                                    textField1.getText(), textField2.getText(), textField3.getText()});
-                            textField.setText("");
-                            textField1.setText("");
-                            textField2.setText("");
-                            textField3.setText("");
-                        }
-                        textField.setEditable(true);
-                    } else if (e.getSource() == b2) { // nut Cancel
+                    }
+                    if (editIndex >= 0 && isOK == true && check == 1) {
+                        model.setValueAt(textField.getText(), editIndex, 1);
+                        model.setValueAt(textField1.getText(), editIndex, 1);
+                        model.setValueAt(textField2.getText(), editIndex, 2);
+                        model.setValueAt(textField3.getText(), editIndex, 3);
                         textField.setText("");
                         textField1.setText("");
                         textField2.setText("");
                         textField3.setText("");
-                        textField.requestFocus();
+                        editIndex = -1;
+                    } else if (isOK == true) {
+                        model.addRow(new Object[]{textField.getText(),
+                                textField1.getText(), textField2.getText(), textField3.getText()});
+                        textField.setText("");
+                        textField1.setText("");
+                        textField2.setText("");
+                        textField3.setText("");
+                    }
+                    textField.setEditable(true);
+                } else if (e.getSource() == b2) { // nut Cancel
+                    textField.setText("");
+                    textField1.setText("");
+                    textField2.setText("");
+                    textField3.setText("");
+                    textField.requestFocus();
 
-                    } else if (e.getSource() == b6) {// Nut delete
-                        int removeIndex = table.getSelectedRow();
-                        if (removeIndex == -1) {
-                            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 dòng để xóa",
-                                    "Thông báo", JOptionPane.DEFAULT_OPTION);
-                        } else {
-                            int result = JOptionPane.showConfirmDialog(
-                                    null, "Bạn Có Muốn Xóa Không ?",
-                                    "Thong báo", JOptionPane.OK_CANCEL_OPTION);
-                            if (result == JOptionPane.OK_OPTION) {
-                                model.removeRow(removeIndex);
-                            }
-                        }
-                    } else if (e.getSource() == b5) {// nut Edit
-                        editIndex = table.getSelectedRow();
-                        if (editIndex < 0) {
-                            JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 dòng để Edit",
-                                    "Thông báo", JOptionPane.DEFAULT_OPTION);
-                        } else {
-                            textField.setEditable(false);
-                            textField1.setEditable(true);
-                            textField2.setEditable(true);
-                            textField3.setEditable(true);
-                            textField.setText((String) model.getValueAt(editIndex, 0));
-                            textField1.setText((String) model.getValueAt(editIndex, 1));
-                            textField2.setText((String) model.getValueAt(editIndex, 2));
-                            textField3.setText((String) model.getValueAt(editIndex, 3));
-
-                        }
-                        check = 1;
-
-
-                    } else if (e.getSource() == b7) { //Nut Exit
-                        ArrayList<String> arr = new ArrayList<>();
+                } else if (e.getSource() == b6) {// Nut delete
+                    int removeIndex = table.getSelectedRow();
+                    if (removeIndex == -1) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 dòng để xóa",
+                                "Thông báo", JOptionPane.DEFAULT_OPTION);
+                    } else {
                         int result = JOptionPane.showConfirmDialog(
-                                null, "Bạn Có Muốn Thoát Không",
+                                null, "Bạn Có Muốn Xóa Không ?",
                                 "Thong báo", JOptionPane.OK_CANCEL_OPTION);
                         if (result == JOptionPane.OK_OPTION) {
-                            for (int i = 0; i < model.getRowCount(); i++) {
-                                arr.add((String) model.getValueAt(i, 0));
-                                arr.add((String) model.getValueAt(i, 1));
-                                arr.add((String) model.getValueAt(i, 2));
-                                arr.add((String) model.getValueAt(i, 3));
-                            }
-                            if (!flag) {
-                                File f = new File(fileName);
-                                f.delete();
-                                try {
-                                    File myObj = new File(fileName);
-                                    myObj.createNewFile();
-                                    FileWriter myWriter = new FileWriter(myObj);
-                                    for (int j = 0; j < arr.size(); j++) {
-                                        myWriter.write(arr.get(j) + ",");
-                                    }
-                                    myWriter.close();
-                                } catch (IOException ex) {
-                                    System.out.println("An error occurred.");
-                                    ex.printStackTrace();
-                                }
-                            }
-                            System.exit(0);
+                            model.removeRow(removeIndex);
                         }
-                    } else if (e.getSource() == b3) { // Nut Load
-                        String content = "";
-                        JFileChooser file = new JFileChooser();
-                        var result = file.showOpenDialog(null);
-                        if (result == JFileChooser.APPROVE_OPTION) {
-                            model.setRowCount(0);
-                            fileName = file.getSelectedFile().getAbsolutePath();
-                            try {
-                                content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
-                            } catch (IOException er) {
-                                er.printStackTrace();
-                            }
-                        }
-                        String[] split = content.split(",");
-                        try {
-                            for (int i = 0; i < split.length; i += 4) {
-                                model.addRow(new Object[]{split[i], split[i + 1], split[i + 2], split[i + 3]});
-                            }
-                        } catch (Exception ex) {
-
-                        }
-                        flag = false;
-                        editIndex = -1;
-                    } else if (e.getSource() == b8) {//nút backFirst
-                        table.setRowSelectionInterval(0, 0);
-
-
-                    } else if (e.getSource() == b9) {//nút goEnd
-                        int endRow = table.getRowCount() - 1;
-                        table.setRowSelectionInterval(endRow, endRow);
                     }
+                } else if (e.getSource() == b5) {// nut Edit
+                    editIndex = table.getSelectedRow();
+                    if (editIndex < 0) {
+                        JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 dòng để Edit",
+                                "Thông báo", JOptionPane.DEFAULT_OPTION);
+                    } else {
+                        textField.setEditable(false);
+                        textField1.setEditable(true);
+                        textField2.setEditable(true);
+                        textField3.setEditable(true);
+                        textField.setText((String) model.getValueAt(editIndex, 0));
+                        textField1.setText((String) model.getValueAt(editIndex, 1));
+                        textField2.setText((String) model.getValueAt(editIndex, 2));
+                        textField3.setText((String) model.getValueAt(editIndex, 3));
+
+                    }
+                    check = 1;
+
+
+                } else if (e.getSource() == b7) { //Nut Exit
+                    ArrayList<String> arr = new ArrayList<>();
+                    int result = JOptionPane.showConfirmDialog(
+                            null, "Bạn Có Muốn Thoát Không",
+                            "Thong báo", JOptionPane.OK_CANCEL_OPTION);
+                    if (result == JOptionPane.OK_OPTION) {
+                        for (int i = 0; i < model.getRowCount(); i++) {
+                            arr.add((String) model.getValueAt(i, 0));
+                            arr.add((String) model.getValueAt(i, 1));
+                            arr.add((String) model.getValueAt(i, 2));
+                            arr.add((String) model.getValueAt(i, 3));
+                        }
+                        if (!flag) {
+                            File f = new File(fileName);
+                            f.delete();
+                            try {
+                                File myObj = new File(fileName);
+                                myObj.createNewFile();
+                                FileWriter myWriter = new FileWriter(myObj);
+                                for (String s : arr) {
+                                    myWriter.write(s + ",");
+                                }
+                                myWriter.close();
+                            } catch (IOException ex) {
+                                System.out.println("An error occurred.");
+                                ex.printStackTrace();
+                            }
+                        }
+                        System.exit(0);
+                    }
+                } else if (e.getSource() == b3) { // Nut Load
+                    String content = "";
+                    JFileChooser file = new JFileChooser();
+                    var result = file.showOpenDialog(null);
+                    if (result == JFileChooser.APPROVE_OPTION) {
+                        model.setRowCount(0);
+                        fileName = file.getSelectedFile().getAbsolutePath();
+                        try {
+                            content = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+                        } catch (IOException er) {
+                            er.printStackTrace();
+                        }
+                    }
+                    String[] split = content.split(",");
+                    try {
+                        for (int i = 0; i < split.length; i += 4) {
+                            model.addRow(new Object[]{split[i], split[i + 1], split[i + 2], split[i + 3]});
+                        }
+                    } catch (Exception ex) {
+
+                    }
+                    flag = false;
+                    editIndex = -1;
+                } else if (e.getSource() == b8) {//nút backFirst
+                    table.setRowSelectionInterval(0, 0);
+
+
+                } else if (e.getSource() == b9) {//nút goEnd
+                    int endRow = table.getRowCount() - 1;
+                    table.setRowSelectionInterval(endRow, endRow);
                 }
             };
 

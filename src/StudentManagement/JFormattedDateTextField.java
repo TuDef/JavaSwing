@@ -10,10 +10,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class JFormattedDateTextField extends JFormattedTextField {
+class JFormattedDateTextField extends JFormattedTextField {
     Format format = new SimpleDateFormat("dd/MM/yyyy");
 
-    public JFormattedDateTextField() {
+    JFormattedDateTextField() {
         super();
         MaskFormatter maskFormatter = null;
         try {
@@ -43,7 +43,7 @@ public class JFormattedDateTextField extends JFormattedTextField {
         });
     }
 
-    public void setValue(Date date) {
+    private void setValue(Date date) {
         super.setValue(toString(date));
     }
 

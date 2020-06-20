@@ -1,245 +1,219 @@
 package xmlmodifier;
 
-import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-@SuppressWarnings("serial")
-public class ModifierXMLFile extends JFrame 
-{
-	private String dir;
-	private String[] id;
-	private String[] name;
-	private String[] salary;
-	private String idText;
-	private String nameText;
-	private String salaryText;
-	private int index;
-	
-	public static void main(String[] args) 
-	{
-		 new ModifierXMLFile().setVisible(true);
-	}
-	
-	public ModifierXMLFile() 
-	{
-		setTitle("XML MODIFIER");
-		setSize(800, 700);
-		setLayout(null);
-		setResizable(false);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
-		// Label
-		JLabel label1 = new JLabel("EMPLOYEE");
-		label1.setBounds(370, 20, 100, 30);
-		add(label1);
-		
-		JLabel idLabel = new JLabel("ID");
-		idLabel.setBounds(50, 400, 50, 30);
-		add(idLabel);
-		
-		JLabel nameLabel = new JLabel("EMPLOYEE NAME");
-		nameLabel.setBounds(50, 480, 120, 30);
-		add(nameLabel);
-		
-		JLabel salaryLabel = new JLabel("SALARY");
-		salaryLabel.setBounds(50, 560, 100, 30);
-		add(salaryLabel);
-		
-		// Tabel
-		JTable table = new JTable();
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(50, 70, 500, 300);
-		add(scrollPane);
-		
-		DefaultTableModel defaultTableModel = new DefaultTableModel()
-		{
-			@Override
-			public boolean isCellEditable(int row, int column) 
-			{
-				return false;
-			};
-		};
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(defaultTableModel);
-		
-		defaultTableModel.addColumn("ID");
-		defaultTableModel.addColumn("Name");
-		defaultTableModel.addColumn("Salary");
-		
-		//button 
-		JButton addButton = new JButton("ADD NEW FILE");
-		addButton.setBounds(590, 70, 130, 30);
-		add(addButton);
-		
-		JButton editButton = new JButton("EDIT DATA");
-		editButton.setBounds(590, 120, 130, 30);
-		add(editButton);
-		
-		JButton saveButton = new JButton("SAVE");
-		saveButton.setBounds(590, 600, 130, 30);
-		add(saveButton);
-		
-		// TextField
-		JTextField idTextField = new JTextField();
-		idTextField.setBounds(50, 440, 500, 30);
-		add(idTextField);
-		
-		JTextField nameTextField = new JTextField();
-		nameTextField.setBounds(50, 520, 500, 30);
-		add(nameTextField);
-		
-		JTextField salaryTextField = new JTextField();
-		salaryTextField.setBounds(50, 600, 500, 30);
-		add(salaryTextField);
-		
-		ActionListener actionListener = new ActionListener()
-		{
-			
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				if(e.getSource() == addButton)
-				{
-					JFileChooser fileChooser = new JFileChooser();
-					int result = fileChooser.showOpenDialog(null);
-					if(result == JFileChooser.APPROVE_OPTION)
-					{
-						defaultTableModel.setRowCount(0);
-						dir = fileChooser.getSelectedFile().getAbsolutePath();
-						readXML(dir);
-						
-						for(int i = 0; i < id.length; i++)
-						{
-							defaultTableModel.addRow(new Object[] {id[i], name[i], salary[i]});
-						}
+
+public class ModifierXMLFile extends JFrame {
+    private String[] id;
+    private String[] name;
+    private String[] salary;
+	private int editIndex;
+	private String fileName;
+
+	public static void main(String[] args) {
+        ModifierXMLFile xmlFile = new ModifierXMLFile();
+        xmlFile.setVisible(true);
+    }
+
+    private ModifierXMLFile() {
+        setTitle("XML");
+        setSize(700, 800);
+        setResizable(false);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setLayout(null);
+
+        int width = 350;
+        int height = 30;
+
+        DefaultTableModel model = new DefaultTableModel();
+
+        JLabel label = new JLabel();
+        label.setText("XML MODIFIER");
+        label.setBounds(275, 10, 300, 23);
+        label.setForeground(Color.BLUE);
+        label.setFont(new Font("Serif", Font.PLAIN, 24));
+        add(label);
+
+        JLabel label4 = new JLabel();
+        label4.setText("EDIT XML");
+        label4.setForeground(Color.GREEN);
+        label4.setBounds(200, 370, 300, 23);
+        label4.setFont(new Font("Serif", Font.PLAIN, 24));
+        add(label4);
+
+        Object[][] data = {};
+        String[] column = {"ID", "Name", "SALARY"};
+        JTable table = new JTable(data, column);
+        JScrollPane jScrollPane = new JScrollPane(table);
+        jScrollPane.setBounds(50, 50, 500, 300);
+        add(jScrollPane);
+
+        model.setDataVector(data, column);
+        table.setModel(model);
+
+        JTextField textField = new JTextField(25);
+        textField.setBounds(200, 400, width, height);
+        textField.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        JTextField textField1 = new JTextField(25);
+        textField1.setBounds(200, 430, width, height);
+        textField1.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        JTextField textField2 = new JTextField(25);
+        textField2.setBounds(200, 460, width, height);
+        textField2.setFont(new Font("Serif", Font.PLAIN, 20));
+
+        JLabel jLabel = new JLabel("ID");
+        jLabel.setBounds(80, 400, width, height);
+        jLabel.setFont(new Font("Serif", Font.PLAIN, 16));
+
+        JLabel jLabel1 = new JLabel("Name");
+        jLabel1.setBounds(80, 430, width, height);
+        jLabel1.setFont(new Font("Serif", Font.PLAIN, 16));
+
+        JLabel jLabel2 = new JLabel("SALARY");
+        jLabel2.setBounds(80, 460, width, height);
+
+        JButton b1 = new JButton("Save");
+        b1.setBounds(200, 500, 100, 40);
+
+        JButton b2 = new JButton("Add .xml");
+        b2.setBounds(560, 50, 100, 40);
+
+        JButton b3 = new JButton("Edit");
+        b3.setBounds(560, 100, 100, 40);
+
+        ActionListener actionListener = e -> {
+            if (e.getSource() == b2) {
+                JFileChooser file = new JFileChooser();
+                var result = file.showOpenDialog(null);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    model.setRowCount(0);
+                    fileName = file.getSelectedFile().getAbsolutePath();
+					readXML(fileName);
+
+					for (int i = 0; i < id.length; i ++) {
+						model.addRow(new Object[]{id[i], name[i], salary[i]});
 					}
-					
+
+                }
+            }
+            else if(e.getSource() == b3){
+				editIndex = table.getSelectedRow();
+				if (editIndex < 0) {
+					JOptionPane.showMessageDialog(null, "Vui lòng chọn 1 dòng để Edit",
+							"Thông báo", JOptionPane.PLAIN_MESSAGE);
+				} else {
+					textField.setText((String) model.getValueAt(editIndex, 0));
+					textField1.setText((String) model.getValueAt(editIndex, 1));
+					textField2.setText((String) model.getValueAt(editIndex, 2));
 				}
-				else if(e.getSource() == editButton) 
-				{
-					index = table.getSelectedRow();
-					
-					if(index < 0)
-						JOptionPane.showMessageDialog(null, "Please choose a row in table to edit");
-					else 
-					{
-						idTextField.setText((String) defaultTableModel.getValueAt(index, 0));
-						nameTextField.setText((String) defaultTableModel.getValueAt(index, 1));
-						salaryTextField.setText((String) defaultTableModel.getValueAt(index, 2));
-					}
+			}else if (e.getSource() == b1){
+				String id = textField.getText();
+				String name =textField1.getText();
+				String salary = textField2.getText();
+				if(checkEmpty(id,name,salary)){
+					model.setValueAt(id,editIndex,0);
+					model.setValueAt(name,editIndex,1);
+					model.setValueAt(salary,editIndex,2);
+					textField.setText("");
+					textField1.setText("");
+					textField2.setText("");
 				}
-				else if(e.getSource() == saveButton)
-				{
-					idText = idTextField.getText();
-					nameText = nameTextField.getText();
-					salaryText = salaryTextField.getText();
-					
-					if(idText.isEmpty() == false && nameText.isEmpty() == false && salaryText .isEmpty() == false)
-					{
-						defaultTableModel.setValueAt(idText, index, 0);
-						defaultTableModel.setValueAt(nameText, index, 1);
-						defaultTableModel.setValueAt(salaryText, index, 2);
-					}
-					else
-						JOptionPane.showMessageDialog(null, "Something is empty");
-					
-					writeXML(dir);
+				try {
+					DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+					DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+					Document doc = docBuilder.parse(fileName);
+
+					Node nodeList = doc.getElementsByTagName("employee").item(editIndex);
+
+					Element element = (Element) nodeList;
+
+					element.getElementsByTagName("ID").item(0).setTextContent(id);
+					element.getElementsByTagName("name").item(0).setTextContent(name);
+					element.getElementsByTagName("salary").item(0).setTextContent(salary);
+
+					TransformerFactory transformerFactory = TransformerFactory.newInstance();
+					Transformer transformer = transformerFactory.newTransformer();
+					DOMSource source = new DOMSource(doc);
+					StreamResult result = new StreamResult(new File(fileName));
+					transformer.transform(source, result);
+
+				} catch (ParserConfigurationException | SAXException | IOException | TransformerException er) {
+					er.printStackTrace();
 				}
 			}
-		};
-		
-		addButton.addActionListener(actionListener);
-		editButton.addActionListener(actionListener);
-		saveButton.addActionListener(actionListener);
+        };
+		b1.addActionListener(actionListener);
+        b2.addActionListener(actionListener);
+		b3.addActionListener(actionListener);
+
+        add(jLabel);
+        add(jLabel1);
+        add(jLabel2);
+        add(textField);
+        add(textField1);
+        add(textField2);
+        add(b1);
+        add(b2);
+        add(b3);
+
+    }
+    private boolean checkEmpty(String id , String name , String salary){
+    	if(id.isEmpty() | salary.isEmpty() | name.isEmpty()){
+			JOptionPane.showMessageDialog(null, "Please Check Again ,Not Empty!");
+    		return false;
+		}
+    	return true;
 	}
-	
-	private void readXML(String dir)
-	{
-		try
-		{
-			File file = new File(dir);
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			
-			Document document = documentBuilder.parse(file);
-			
-			NodeList nodeList = document.getElementsByTagName("employee");
-			
-			id = new String[nodeList.getLength()];
-			name = new String[nodeList.getLength()];
-			salary = new String[nodeList.getLength()];
-			
-			for(int i = 0; i < nodeList.getLength(); i++)
-			{
-				Node currentNode = nodeList.item(i);
-				
-				Element element = (Element) currentNode;
-				 
-				id[i] = element.getElementsByTagName("id").item(0).getTextContent();
-				name[i] = element.getElementsByTagName("name").item(0).getTextContent();
-				salary[i] = element.getElementsByTagName("salary").item(0).getTextContent();
-			}
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	private void writeXML(String dir) 
-	{
-		File file = new File(dir);
-		
-		try
-		{
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			
-			Document document = documentBuilder.parse(file);
-			
-			Node employee = document.getElementsByTagName("employee").item(index);
-			
-			Element element = (Element) employee;
-			
-			element.getElementsByTagName("id").item(0).setTextContent(idText);
-			element.getElementsByTagName("name").item(0).setTextContent(nameText);
-			element.getElementsByTagName("salary").item(0).setTextContent(salaryText);
-			
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			 
-	        Transformer transformer = transformerFactory.newTransformer();
-	        DOMSource domSource = new DOMSource(document);
-	
-	        StreamResult streamResult = new StreamResult(file);
-	        transformer.transform(domSource, streamResult); 
-		}
-		catch(Exception e) 
-		{
+
+    private void readXML(String filename) {
+        try {
+            File file = new File(filename);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+
+            Document document = documentBuilder.parse(file);
+
+            NodeList nodeList = document.getElementsByTagName("employee");
+
+            id = new String[nodeList.getLength()];
+            name = new String[nodeList.getLength()];
+            salary = new String[nodeList.getLength()];
+
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node currentNode = nodeList.item(i);
+
+                Element element = (Element) currentNode;
+
+                id[i] = element.getElementsByTagName("ID").item(0).getTextContent();
+                name[i] = element.getElementsByTagName("name").item(0).getTextContent();
+                salary[i] = element.getElementsByTagName("salary").item(0).getTextContent();
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
-        } 
-	}
+        }
+    }
 }

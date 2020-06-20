@@ -1,13 +1,9 @@
 package StudentManagement;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
+import java.awt.*;
+
 
 public class Control extends JFrame {
     public static void main(String[] args) {
