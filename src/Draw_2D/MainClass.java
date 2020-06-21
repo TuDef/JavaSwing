@@ -22,8 +22,8 @@ public class MainClass extends JFrame {
 
         //Muon su dung lop nao thi add lop do vao
         //app.add(new DrawStar());//Ve hinh ngoi sao
-        //app.add(new DrawRoundRectangle());//Ve hinh chu nhat co bo goc
-        app.add(new DrawCircle());//ve hinh tron
+        app.add(new DrawRoundRectangle());//Ve hinh chu nhat co bo goc
+        //app.add(new DrawCircle());//ve hinh tron
 
 
     }

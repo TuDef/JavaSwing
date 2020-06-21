@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.*;
 
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,19 +22,17 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 
-public class ModifierXMLFile extends JFrame {
-    private String[] id;
-    private String[] name;
-    private String[] salary;
+public class ModifyXML extends JFrame {
 	private int editIndex;
 	private String fileName;
+	private DefaultTableModel model = new DefaultTableModel();
 
 	public static void main(String[] args) {
-        ModifierXMLFile xmlFile = new ModifierXMLFile();
+        ModifyXML xmlFile = new ModifyXML();
         xmlFile.setVisible(true);
     }
 
-    private ModifierXMLFile() {
+    private ModifyXML() {
         setTitle("XML");
         setSize(700, 800);
         setResizable(false);
@@ -46,8 +43,6 @@ public class ModifierXMLFile extends JFrame {
         int width = 350;
         int height = 30;
 
-        DefaultTableModel model = new DefaultTableModel();
-
         JLabel label = new JLabel();
         label.setText("XML MODIFIER");
         label.setBounds(275, 10, 300, 23);
@@ -55,12 +50,12 @@ public class ModifierXMLFile extends JFrame {
         label.setFont(new Font("Serif", Font.PLAIN, 24));
         add(label);
 
-        JLabel label4 = new JLabel();
-        label4.setText("EDIT XML");
-        label4.setForeground(Color.GREEN);
-        label4.setBounds(200, 370, 300, 23);
-        label4.setFont(new Font("Serif", Font.PLAIN, 24));
-        add(label4);
+        JLabel label1 = new JLabel();
+        label1.setText("EDIT XML");
+        label1.setForeground(Color.GREEN);
+        label1.setBounds(200, 370, 300, 23);
+        label1.setFont(new Font("Serif", Font.PLAIN, 24));
+        add(label1);
 
         Object[][] data = {};
         String[] column = {"ID", "Name", "SALARY"};
@@ -107,16 +102,11 @@ public class ModifierXMLFile extends JFrame {
         ActionListener actionListener = e -> {
             if (e.getSource() == b2) {
                 JFileChooser file = new JFileChooser();
-                var result = file.showOpenDialog(null);
+                int result = file.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     model.setRowCount(0);
                     fileName = file.getSelectedFile().getAbsolutePath();
 					readXML(fileName);
-
-					for (int i = 0; i < id.length; i ++) {
-						model.addRow(new Object[]{id[i], name[i], salary[i]});
-					}
-
                 }
             }
             else if(e.getSource() == b3){
@@ -187,7 +177,6 @@ public class ModifierXMLFile extends JFrame {
 		}
     	return true;
 	}
-
     private void readXML(String filename) {
         try {
             File file = new File(filename);
@@ -198,9 +187,9 @@ public class ModifierXMLFile extends JFrame {
 
             NodeList nodeList = document.getElementsByTagName("employee");
 
-            id = new String[nodeList.getLength()];
-            name = new String[nodeList.getLength()];
-            salary = new String[nodeList.getLength()];
+            String[] id = new String[nodeList.getLength()];
+            String[] name = new String[nodeList.getLength()];
+            String[] salary = new String[nodeList.getLength()];
 
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node currentNode = nodeList.item(i);
@@ -211,7 +200,9 @@ public class ModifierXMLFile extends JFrame {
                 name[i] = element.getElementsByTagName("name").item(0).getTextContent();
                 salary[i] = element.getElementsByTagName("salary").item(0).getTextContent();
             }
-
+            for (int i = 0; i < id.length; i ++) {
+                model.addRow(new Object[]{id[i], name[i], salary[i]});
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

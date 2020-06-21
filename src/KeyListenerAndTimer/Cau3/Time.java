@@ -1,42 +1,34 @@
-package cau3;
+package KeyListenerAndTimer.Cau3;
 
-import java.awt.Color;
+
+import javax.swing.*;
+import java.awt.*;
 import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Timer;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+public class Time extends JPanel {
 
-@SuppressWarnings("serial")
-public class Time extends JPanel 
-{
-	
-	public Time()
-	{
+	Time() {
 		setSize(300, 300);
 		setLayout(null);
-		
-		JLabel label = new JLabel("ROLEX | SWISS WATCH");
+
+		JLabel label = new JLabel("CLOCK");
 		label.setForeground(Color.blue);
 		label.setBounds(70, 60, 150, 30);
 		add(label);
-		
+
 		JTextField textField = new JTextField();
 		textField.setBounds(45, 100, 200, 30);
 		textField.setEditable(false);
-		
-		TimerTask task = new TimerTask()
-		{
-			
+
+		TimerTask task = new TimerTask() {
 			@Override
-			public void run() 
-			{
+			public void run() {
 				textField.setText(new Date().toString());
 			}
 		};
-		
+
 		Timer timer = new Timer();
 		timer.schedule(task, 0, 1000);
 		add(textField);

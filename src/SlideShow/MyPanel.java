@@ -4,11 +4,10 @@ package SlideShow;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.io.File;
-import java.net.URL;
+
 
 
 public class MyPanel extends JPanel {
@@ -16,7 +15,8 @@ public class MyPanel extends JPanel {
     private int position;
     private boolean check(File a){
         String substring = String.valueOf(a).substring(String.valueOf(a).lastIndexOf("."));
-        if(substring.equals(".png")||(substring.equals(".jpg"))||(substring.equals(".jpeg"))||(substring.equals(".gif"))){
+        if(substring.equals(".png")||(substring.equals(".jpg"))||(substring.equals(".jpeg"))||
+                (substring.equals(".gif"))){
             return true;
         }
         return false;
@@ -89,7 +89,6 @@ public class MyPanel extends JPanel {
                         JOptionPane.showMessageDialog(null,
                                 "Thư mục rỗng!", "thông báo", JOptionPane.ERROR_MESSAGE);
                     } else {
-
                         for (int i = 0; i < selectedFiles.length; i++) {
                             if (check(selectedFiles[i])) {
                                 position = i;

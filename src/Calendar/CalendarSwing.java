@@ -22,7 +22,6 @@ class CalendarSwing extends JPanel {
 		setSize(500, 500);
 		setLayout(null);
 
-		
 		JButton backButton = new JButton("<=");
 		backButton.setBounds(80, 25, 70, 30);
 
@@ -103,19 +102,17 @@ class CalendarSwing extends JPanel {
 					cal.add(Calendar.MONTH,-1);
 					month--;
 					month = 12;
+					monthTextField.setText(month + "/" + year);
 				}
 				else {
 					month--;
 					cal.add(Calendar.MONTH,-1);
+					monthTextField.setText(month + "/" + year);
 				}
 				firstDay();
 				lastDay();
 
-
-				monthTextField.setText(month + "/" + year);
-
 				defaultTableModel.setRowCount(0);
-
 
 				addCalendarToTable(column1, column2, column3, column4, column5, column6);
 				defaultTableModel.addRow(column1);
@@ -185,7 +182,8 @@ class CalendarSwing extends JPanel {
 		return Integer.parseInt(cal.getTime().toString().substring(8,10));
 	}
 
-	private void addCalendarToTable(Object[] week1, Object[] week2, Object[] week3, Object[] week4, Object[] week5, Object[] week6) {
+	private void addCalendarToTable(Object[] week1, Object[] week2,
+									Object[] week3, Object[] week4, Object[] week5, Object[] week6) {
 		int count = 2;
 		week1[firstDay()] = 1;
 		for(int i = 0; i < week1.length; i++) {

@@ -3,7 +3,6 @@ package Draw_2D;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.RoundRectangle2D.Double;
 
 public class DrawCircle extends JPanel {
     public void paintComponent(Graphics g) {

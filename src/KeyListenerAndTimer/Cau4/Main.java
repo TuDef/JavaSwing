@@ -1,12 +1,9 @@
-package cau4;
+package KeyListenerAndTimer.Cau4;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings("serial")
-public class Main extends JFrame 
-{
-	public Main() 
-	{
+public class Main extends JFrame {
+	public Main() {
 		setTitle("CAU 4");
 		setSize(370, 200);
 		setResizable(false);
@@ -18,8 +15,7 @@ public class Main extends JFrame
 		
 	}
 	
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 		Main display = new Main();
 		display.setVisible(true);
 	}

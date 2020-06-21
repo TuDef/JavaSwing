@@ -1,12 +1,9 @@
-package cau2;
+package KeyListenerAndTimer.Cau2;
 
 import javax.swing.JFrame;
 
-@SuppressWarnings("serial")
-public class Main extends JFrame 
-{
-	public static void main(String[] args)
-	{
+public class Main extends JFrame {
+	public static void main(String[] args) {
 		JFrame cau2 = new JFrame("CAU 2");
 		cau2.setSize(1200, 800);
 		cau2.setDefaultCloseOperation(EXIT_ON_CLOSE);

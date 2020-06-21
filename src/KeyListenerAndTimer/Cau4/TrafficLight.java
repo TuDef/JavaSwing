@@ -1,4 +1,4 @@
-package cau4;
+package KeyListenerAndTimer.Cau4;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,26 +8,21 @@ import java.util.TimerTask;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
-public class TrafficLight extends JPanel
-{
+
+public class TrafficLight extends JPanel {
 	private Color red = Color.gray;
 	private Color yellow = Color.gray;
 	private Color green = Color.green;
 	private String light = "green";
 	
-	public TrafficLight() 
-	{
+	TrafficLight() {
 		JLabel label = new JLabel("TRAFFIC LIGHT");
 		label.setBounds(100, 10, 80, 30);
 		add(label);
 		
-		TimerTask timerTask = new TimerTask() 
-		{
-			
+		TimerTask timerTask = new TimerTask() {
 			@Override
-			public void run() 
-			{
+			public void run() {
 				switchLight();
 			}
 		};
@@ -37,8 +32,7 @@ public class TrafficLight extends JPanel
 	} 
 	
 	@Override
-	protected void paintComponent(Graphics g)
-	{
+	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
 		g.setColor(red);
@@ -58,22 +52,18 @@ public class TrafficLight extends JPanel
 		
 	}
 	
-	private void switchLight()
-	{
-		if(light.equals("green") == true )
-		{
+	private void switchLight() {
+		if(light.equals("green")) {
 			light = "yellow";
 			green = Color.gray;
 			yellow = Color.yellow;
 		}
-		else if(light.equals("yellow") == true)
-		{
+		else if(light.equals("yellow")) {
 			light = "red";
 			yellow = Color.gray;
 			red = Color.red;
 		}
-		else if(light.equals("red") == true)
-		{
+		else if(light.equals("red")) {
 			light = "green";
 			red = Color.gray;
 			green = Color.green;

@@ -1,25 +1,20 @@
-package cau3;
+package KeyListenerAndTimer.Cau3;
+import javax.swing.*;
 
-import javax.swing.JFrame;
-
-@SuppressWarnings("serial")
-public class Main extends JFrame 
-{
-	public Main()
-	{
+public class Main extends JFrame {
+	private Main() {
 		setTitle("CAU 3");
 		setSize(300, 300);
 		setLayout(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		Time time = new Time();
 		add(time);
 	}
 
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 		Main main = new Main();
 		main.setVisible(true);
 	}
